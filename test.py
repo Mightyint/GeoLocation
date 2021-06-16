@@ -1,9 +1,12 @@
 from plyer import gps
+from kivy.app import App
 
-def print_locations(**kwargs):
-    print('lat: {lat}, lon: {lon}'.format(**kwargs))
+class MainApp():
+    def on_start():
+        gps.configure(on_location=self.on_gps_location)
+        gps.start()
+    
+    def on_gps_location(self, **kwargs):
+        print(kwargs)
 
-gps.configure(on_location=print_locations)
-gps.start()
-# later
-gps.stop()
+MainApp().run()
