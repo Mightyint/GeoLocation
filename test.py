@@ -1,12 +1,19 @@
-from plyer import gps
 from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
 
-class MainApp():
-    def on_start():
-        gps.configure(on_location=self.on_gps_location)
-        gps.start()
-    
-    def on_gps_location(self, **kwargs):
-        print(kwargs)
+class LoginScreen(GridLayout):
+    def __init__(self, **kwargs):
+        super(LoginScreen, self).__init__(**kwargs)
+        self.cols =2
+        self.add_widget(Label(text="Username:"))
+        self.username =TextInput(multiline=False)
+        self.add_widget(self.username)
 
-MainApp().run()
+class SimpleKivy(App):
+    def build(self):
+        return LoginScreen()
+
+if __name__ == "__main__":
+    SimpleKivy().run()
