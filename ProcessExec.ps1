@@ -1,25 +1,27 @@
 class ProcessExec{
-    hidden [Object]$OrderedData = @()
-    [Hashtable] $ExecutionSettings
-
-    hidden [String]$ErrVar
+    [Hashtable]$ExecutionSettings
     [String]$ComputerList
+    
+    hidden [Object]$OrderedData = @()
+    hidden [String]$ErrVar
     
     [Boolean]$Local = $true
     [Boolean]$Remote = $false
 
-
     ProcessExec([String]$Computers){
         $this.ComputerList = $Computers
     }
+    
     Initialize([Hashtable]$props){
         $this.SetExecutionSettings()
         [Hashtable]$hashProperties = $props + $this.ExecutionSettings
         $this.OrderedData += New-Object psobject -Property ($hashProperties)
     }
+    
     [Object]GetProcessinfo(){
         return ($this.OrderedData)
     }
+    
     [Hashtable]GetExecutionSettings(){
         return ($this.ExecutionSettings)
     }
@@ -27,10 +29,12 @@ class ProcessExec{
     [String] GetComputerList(){
         return ($this.ComputerList)
     }
+
     RemoteStart(){
         $this.Remote = $true
         $this.Local = $false
     }
+    
     SetExecutionSettings(){
         if(($this.ComputerList -eq $null) -or ($this.ComputerList -eq ".")){
             $this.ExecutionSettings = @{
@@ -48,6 +52,7 @@ class ProcessExec{
             }
         }
     }
+    
     SetProcessinfo(){
         $ProcessData = Get-Process | select Handles, 
         Id, 
@@ -83,6 +88,7 @@ class ProcessExec{
             }
         }
     }
+    
     SetRemoteinfo(){
         foreach($Computer in $this.ComputerList){
             try{
